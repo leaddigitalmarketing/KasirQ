@@ -2,122 +2,116 @@
 <html lang="id">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
-<title>Kasir Que</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kasir Que - POS Mobile</title>
 <style>
   :root{
     --bg:#0f1724;
     --card:#0b1220;
-    --accent:#07c;
-    --muted:#9aa6b2;
+    --accent:#06b6d4;
+    --muted:#94a3b8;
     --glass: rgba(255,255,255,0.03);
-    --success: #0f9d58;
-    --danger: #ef4444;
-    --shadow: 0 6px 18px rgba(2,6,23,0.6);
-    font-family: Inter, Roboto, system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial;
+    --success:#16a34a;
+    --danger:#ef4444;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   }
-  html,body{height:100%;margin:0;background:linear-gradient(180deg,#071127 0%, #041021 100%);color:#e6eef6}
+  html,body{height:100%; margin:0; background:linear-gradient(180deg,#071028 0%, #071a2b 100%); color:#e6eef6;}
   .app {
-    max-width:980px;
-    margin:18px auto;
-    padding:14px;
-    box-sizing:border-box;
+    max-width:980px; margin:16px auto; padding:16px;
   }
-  header{
-    display:flex;
-    align-items:center;
-    gap:12px;
+  header {
+    display:flex; gap:12px; align-items:center; justify-content:space-between;
     margin-bottom:12px;
   }
-  .brand{
-    display:flex;
-    align-items:center;
-    gap:10px;
+  .brand {
+    display:flex; gap:10px; align-items:center;
   }
   .logo {
-    width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#4ae);display:flex;align-items:center;justify-content:center;font-weight:700;color:#021028;box-shadow:var(--shadow);
+    width:48px; height:48px; border-radius:10px;
+    background:linear-gradient(135deg,var(--accent),#8b5cf6);
+    display:flex;align-items:center;justify-content:center;font-weight:700;
+    box-shadow:0 6px 18px rgba(3,7,18,0.6);
   }
   h1{font-size:18px;margin:0}
-  p.lead{margin:0;color:var(--muted);font-size:13px}
-  .grid{
+  .controls {display:flex; gap:8px; align-items:center;}
+  button.btn {
+    background:var(--glass); border:1px solid rgba(255,255,255,0.04); color:var(--accent);
+    padding:8px 12px; border-radius:8px; font-weight:600; cursor:pointer;
+  }
+  button.btn.primary {
+    background:linear-gradient(90deg,var(--accent),#7c3aed); color:#001219; border:0;
+  }
+
+  /* layout */
+  .grid {
     display:grid;
-    grid-template-columns:1fr;
+    grid-template-columns: 1fr 360px;
     gap:12px;
   }
+  @media (max-width:900px){
+    .grid{ grid-template-columns: 1fr; }
+  }
 
-  /* Card */
+  /* card */
   .card{
-    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    padding:12px;border-radius:12px;box-shadow:var(--shadow);
-    border:1px solid rgba(255,255,255,0.03);
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    padding:12px; border-radius:12px; box-shadow: 0 6px 20px rgba(2,6,23,0.6);
   }
 
-  .top-actions{display:flex;gap:8px;flex-wrap:wrap}
-  button.btn{
-    background:var(--accent);
-    color:white;border:0;padding:10px 12px;border-radius:10px;font-weight:600;
-  }
-  button.ghost{
-    background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:10px 12px;border-radius:10px;
-  }
-  .muted{color:var(--muted);font-size:13px}
+  /* product stock table */
+  .table { width:100%; border-collapse:collapse; }
+  .table th, .table td { padding:8px 6px; text-align:left; font-size:13px; color:var(--muted); }
+  .table th { color:#cfeefe; font-size:12px; font-weight:700; opacity:0.9; }
+  .table tr:nth-child(odd){ background: transparent; }
+  .small { font-size:12px; color:var(--muted); }
 
-  /* product list */
-  table{width:100%;border-collapse:collapse;color:#e6eef6}
-  th,td{padding:8px 6px;text-align:left;border-bottom:1px dashed rgba(255,255,255,0.03);font-size:13px}
-  th{font-size:12px;color:var(--muted)}
-  .small{font-size:12px;color:var(--muted)}
+  /* form */
+  .form-row { display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap;}
+  .form-row input, .form-row select { flex:1; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit; }
+  .form-inline { display:flex; gap:8px; align-items:center; }
 
-  .flex{display:flex;gap:8px;align-items:center}
-  .input, input, select, textarea{
-    background:var(--glass);border:1px solid rgba(255,255,255,0.03);padding:10px;border-radius:10px;color:#e6eef6;outline:none;width:100%;
-  }
-  .row{display:flex;gap:8px}
-  .col{flex:1}
+  /* cart (right column) */
+  .cart-items { max-height:48vh; overflow:auto; margin-bottom:8px; }
+  .cart-row { display:flex; gap:8px; align-items:center; padding:8px; border-radius:8px; background:rgba(255,255,255,0.012); margin-bottom:8px; }
+  .cart-row .meta { flex:1; }
+  .price { font-weight:700; color:#fff; }
+  .muted { color:var(--muted); font-size:12px; }
 
-  /* popup modal */
-  .modal-backdrop{
-    position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:flex-end;justify-content:center;padding:14px;z-index:40;
-  }
-  .modal{
-    width:100%;max-width:760px;background:linear-gradient(180deg,#071428,#02172a);border-radius:14px;padding:12px;border:1px solid rgba(255,255,255,0.04);
-    box-shadow:var(--shadow);
-  }
-  .modal .title{font-size:16px;margin-bottom:8px}
+  .totals { display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding-top:8px; border-top:1px dashed rgba(255,255,255,0.04); }
+  .actions { display:flex; gap:8px; margin-top:8px; }
 
-  /* transaction UI layout */
-  .cart-list{max-height:320px;overflow:auto;margin-top:8px;border-radius:8px;padding:6px;background:rgba(255,255,255,0.01)}
-  .cart-item{display:flex;justify-content:space-between;gap:8px;padding:8px;border-radius:8px}
-  .cart-item + .cart-item{margin-top:6px;border-top:1px dashed rgba(255,255,255,0.02)}
-  .price{font-weight:700}
-
-  .invoice{
-    background:white;color:#001;padding:12px;border-radius:6px;width:100%;max-width:320px;
+  /* modal */
+  .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:flex-end; justify-content:center; z-index:50; padding:12px; }
+  .modal { background:#071224; width:100%; max-width:720px; border-radius:12px 12px 0 0; padding:12px; color:inherit; }
+  @media(min-width:900px){
+    .modal{ border-radius:12px; align-self:center; max-height:90vh; overflow:auto; }
   }
 
-  footer{margin-top:14px;text-align:center;color:var(--muted);font-size:13px}
+  /* suggestion dropdown */
+  .suggestions { position:relative; }
+  .suggest-list { position:absolute; left:0; right:0; background:#061022; border-radius:8px; margin-top:6px; z-index:40; box-shadow:0 8px 30px rgba(0,0,0,0.6); }
+  .suggest-item { padding:8px 10px; border-bottom:1px solid rgba(255,255,255,0.02); color:var(--muted); cursor:pointer; }
+  .suggest-item:hover { background:rgba(255,255,255,0.02); color:#fff; }
 
-  /* responsive layout for mobile-like view */
-  @media (min-width:720px){
-    .grid{grid-template-columns: 1fr 420px;}
-  }
-
-  /* thermal print */
+  /* invoice print styling (thermal 58mm) */
   @media print {
     body * { visibility: hidden; }
-    .printable, .printable * { visibility: visible; }
-    .printable { position: absolute; left: 0; top: 0; }
-    @page { size: 58mm; margin: 4mm; }
-    /* allow narrow width for thermal */
-    .printable { width:58mm; font-size:12px; }
+    #print-area, #print-area * { visibility: visible; }
+    #print-area { position: absolute; left:0; top:0; width:58mm; font-size:12px; color:#000; background:#fff; padding:6px; }
+    .no-print { display:none !important; }
   }
+  /* on-screen invoice preview */
+  .invoice { background:#fff; color:#001; padding:12px; border-radius:8px; width:100%; max-width:320px; }
+  .invoice h3 { margin:0 0 8px 0; font-size:16px; }
+  .invoice .line { display:flex; justify-content:space-between; margin-bottom:6px; }
+  .invoice .center { text-align:center; font-size:12px; color:#444; }
 
-  /* small helpers */
-  .right{text-align:right}
-  .danger{color:var(--danger)}
-  .success{color:var(--success)}
-  .badge{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-size:12px}
-  .nowrap{white-space:nowrap}
+  /* tiny helpers */
+  .text-right { text-align:right; }
+  .muted-2 { color:#9aa7b8; font-size:12px; }
+  .small-btn { padding:6px 8px; border-radius:8px; font-size:13px; }
+  .danger { background:var(--danger); color:#fff; border:0; }
+  .success { background:var(--success); color:#fff; border:0; }
 </style>
 </head>
 <body>
@@ -127,722 +121,608 @@
       <div class="logo">KQ</div>
       <div>
         <h1>Kasir Que</h1>
-        <p class="lead">Sistem kasir sederhana — mobile-first. Data tersimpan di perangkat (cache/localStorage).</p>
+        <div class="muted-2">Sistem kasir ringan — mobile first</div>
       </div>
+    </div>
+    <div class="controls">
+      <button class="btn" id="btn-open-trans">Transaksi</button>
+      <button class="btn" id="btn-reports">Laporan</button>
+      <button class="btn" id="btn-open-stock">Stok</button>
+      <button class="btn primary" id="btn-sample">Isi contoh</button>
     </div>
   </header>
 
-  <div class="grid">
-    <!-- LEFT: main -->
-    <div>
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div>
-            <strong>Menu</strong><div class="small muted">Kelola produk, transaksi, dan laporan</div>
+  <main class="grid">
+    <!-- LEFT: main content shown by tabs -->
+    <section id="main-panel" class="card">
+      <!-- default: quick overview + product search -->
+      <div id="panel-home">
+        <div class="form-row">
+          <input id="quick-search" placeholder="Cari produk, ketik nama..." autocomplete="off" />
+          <button class="btn" id="open-trans-quick">Buka Transaksi</button>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:8px;">
+          <div style="flex:1;" class="card">
+            <h3 style="margin:0 0 8px 0">Ringkasan</h3>
+            <div class="muted">Produk tersimpan: <span id="cnt-products">0</span></div>
+            <div class="muted">Total transaksi: <span id="cnt-trans">0</span></div>
           </div>
-          <div class="top-actions">
-            <button class="btn" id="btn-open-transaction">Transaksi Baru</button>
-            <button class="ghost" id="btn-add-product">Tambah Produk</button>
-            <button class="ghost" id="btn-export">Export JSON</button>
-            <button class="ghost" id="btn-import">Import JSON</button>
+          <div style="width:200px;" class="card">
+            <h3 style="margin:0 0 8px 0">Aksi Cepat</h3>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <button class="btn" id="btn-add-product">Tambah Produk</button>
+              <button class="btn" id="btn-clear-data">Hapus Semua Data</button>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- products list -->
-      <div class="card" style="margin-top:12px">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div><strong>Stok Produk</strong><div class="small muted">Nama, satuan, harga modal, harga ecer (<5), harga grosir (>=5)</div></div>
-          <div class="small muted" id="prod-count">0 produk</div>
+      <!-- STOCK PANEL -->
+      <div id="panel-stock" style="display:none;">
+        <h2 style="margin-top:0">Stok Produk</h2>
+        <div style="display:flex; gap:8px; margin-bottom:8px;">
+          <div style="flex:2" class="card">
+            <h4>Tambah / Edit Produk</h4>
+            <div class="form-row">
+              <input id="p-name" placeholder="Nama produk (contoh: Sabun Mandi 100ml)">
+              <input id="p-unit" placeholder="Satuan (pcs/box/rim)">
+            </div>
+            <div class="form-row">
+              <input id="p-cost" placeholder="Harga modal (RP)" type="number" min="0">
+              <input id="p-retail" placeholder="Harga jual ecer (RP)" type="number" min="0">
+              <input id="p-wholesale" placeholder="Harga jual grosir (>=5) (RP)" type="number" min="0">
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn primary" id="save-product">Simpan Produk</button>
+              <button class="btn" id="reset-product">Reset</button>
+            </div>
+          </div>
+          <div style="flex:1" class="card">
+            <h4>Filter</h4>
+            <input id="filter-name" placeholder="Cari nama..." />
+            <div style="margin-top:8px;">
+              <button class="btn" id="export-products">Ekspor JSON</button>
+              <button class="btn" id="import-products">Impor JSON</button>
+              <input type="file" id="file-input" style="display:none;" accept=".json">
+            </div>
+          </div>
         </div>
-        <table id="product-table" style="margin-top:8px">
-          <thead>
-            <tr><th>Nama</th><th>Satuan</th><th>Harga Modal</th><th>Harga Ecer</th><th>Harga Grosir</th><th class="right">Aksi</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+
+        <div class="card">
+          <table class="table" id="products-table">
+            <thead>
+              <tr><th>Nama</th><th>Satuan</th><th>Modal</th><th>Jual Ecer</th><th>Jual Grosir (>=5)</th><th></th></tr>
+            </thead>
+            <tbody id="products-tbody"></tbody>
+          </table>
+        </div>
       </div>
 
-      <!-- laporan -->
-      <div class="card" style="margin-top:12px">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div><strong>Laporan Penjualan</strong><div class="small muted">Filter: hari / minggu / bulan</div></div>
-          <div style="display:flex;gap:8px">
-            <select id="report-range" class="input" style="width:160px">
-              <option value="today">Hari ini</option>
+      <!-- REPORT PANEL -->
+      <div id="panel-reports" style="display:none;">
+        <h2 style="margin-top:0">Laporan Penjualan</h2>
+        <div class="card">
+          <div class="form-row">
+            <select id="report-range">
+              <option value="day">Hari ini</option>
               <option value="week">Minggu ini</option>
-              <option value="month" selected>Bulan ini</option>
-              <option value="custom">Kustom (range)</option>
+              <option value="month">Bulan ini</option>
+              <option value="all">Semua</option>
             </select>
-            <input type="date" id="report-from" class="input" style="width:140px;display:none"/>
-            <input type="date" id="report-to" class="input" style="width:140px;display:none"/>
-            <button class="btn" id="btn-refresh-report">Refresh</button>
+            <button class="btn" id="btn-generate-report">Tampilkan</button>
           </div>
-        </div>
-        <table id="report-table" style="margin-top:8px">
-          <thead><tr><th>Nama Barang</th><th>Jumlah Terjual</th><th>Harga Modal</th><th>Harga Jual</th><th>Laba</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- RIGHT: ringkasan & quick actions -->
-    <div>
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div><strong>Ringkasan</strong><div class="small muted">Total transaksi & pendapatan</div></div>
-          <div>
-            <div class="badge" id="summary-transactions">0 transaksi</div>
-          </div>
-        </div>
-        <div style="margin-top:12px">
-          <div style="display:flex;justify-content:space-between">
-            <div class="small muted">Pendapatan (bulan ini)</div>
-            <div id="summary-revenue">Rp 0</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;margin-top:8px">
-            <div class="small muted">Laba (bulan ini)</div>
-            <div id="summary-profit">Rp 0</div>
+          <div style="margin-top:8px;">
+            <table class="table" id="report-table">
+              <thead><tr><th>Nama</th><th>Jumlah Terjual</th><th>Harga Modal</th><th>Harga Jual (avg)</th><th>Laba</th></tr></thead>
+              <tbody id="report-body"></tbody>
+            </table>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="card" style="margin-top:12px">
-        <strong>Pengaturan Cepat</strong>
-        <div style="margin-top:8px" class="small muted">Reset data untuk testing</div>
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <button class="ghost" id="btn-seed">Isi contoh data</button>
-          <button class="ghost" id="btn-clear">Hapus semua data</button>
+    <!-- RIGHT: Cart / transaksi summary -->
+    <aside id="panel-cart" class="card">
+      <h3>Transaksi Kasir</h3>
+      <div class="muted small">Klik "Transaksi" untuk buka popup penuh</div>
+      <div style="margin-top:10px;">
+        <div class="muted">Keranjang</div>
+        <div class="cart-items" id="cart-items">
+          <!-- cart rows -->
+        </div>
+        <div class="totals">
+          <div class="muted">Items: <span id="cart-count">0</span></div>
+          <div class="price">Total: <span id="cart-total">Rp 0</span></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="btn-open-transaction">Buka Transaksi (Popup)</button>
+          <button class="btn" id="btn-clear-cart">Kosongkan</button>
         </div>
       </div>
-
-      <div class="card" style="margin-top:12px">
-        <strong>Petunjuk Cepat</strong>
-        <ol style="padding-left:18px">
-          <li>Tambah produk via tombol "Tambah Produk".</li>
-          <li>Buka Transaksi Baru, cari produk, masukkan jumlah, lalu "Tambah".</li>
-          <li>Selesai: "Selesai Transaksi" untuk melihat/invoice & cetak thermal 58mm.</li>
-        </ol>
-      </div>
-    </div>
-  </div>
-
-  <footer>Kasir Que • Data tersimpan di perangkat (LocalStorage)</footer>
+    </aside>
+  </main>
 </div>
 
-<!-- MODAL: Add Product -->
-<div class="modal-backdrop" id="modal-product-backdrop">
-  <div class="modal card" role="dialog" aria-modal="true">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div><div class="title">Tambah / Edit Produk</div><div class="small muted">Isi detail produk</div></div>
-      <div><button class="ghost" id="close-product-modal">Tutup</button></div>
-    </div>
-    <div style="margin-top:10px">
-      <div class="row">
-        <div class="col"><label class="small muted">Nama Produk</label><input id="p-name" class="input" /></div>
-        <div class="col" style="max-width:120px"><label class="small muted">Satuan</label><input id="p-unit" class="input" /></div>
+<!-- TRANSACTION MODAL -->
+<div id="modal-transaction" style="display:none;">
+  <div class="modal-backdrop" id="trans-backdrop">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h2 style="margin:0">Transaksi Baru</h2>
+        <div><button class="btn" id="close-trans">Tutup</button></div>
       </div>
-      <div class="row" style="margin-top:8px">
-        <div class="col"><label class="small muted">Harga Modal (RP)</label><input id="p-cost" class="input" type="number" /></div>
-        <div class="col"><label class="small muted">Harga Ecer &lt;5 (RP)</label><input id="p-retail" class="input" type="number" /></div>
-        <div class="col"><label class="small muted">Harga Grosir ≥5 (RP)</label><input id="p-wholesale" class="input" type="number" /></div>
-      </div>
-      <div style="display:flex;justify-content:flex-end;margin-top:10px;gap:8px">
-        <button class="ghost" id="btn-cancel-product">Batal</button>
-        <button class="btn" id="btn-save-product">Simpan</button>
+
+      <div style="margin-top:8px;">
+        <div class="suggestions">
+          <input id="trans-search" placeholder="Cari produk (ketik nama)..." autocomplete="off" />
+          <div id="suggest-box" class="suggest-list" style="display:none;"></div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+          <input id="trans-name" placeholder="Nama terpilih" readonly>
+          <input id="trans-qty" type="number" min="1" value="1">
+          <input id="trans-price" placeholder="Harga (otomatis)" readonly>
+          <button class="btn" id="btn-add-to-cart">Tambah</button>
+        </div>
+
+        <div style="margin-top:12px;">
+          <div class="cart-items" id="trans-cart-list"></div>
+          <div class="totals">
+            <div class="muted">Items: <span id="trans-count">0</span></div>
+            <div class="price">Total: <span id="trans-total">Rp 0</span></div>
+          </div>
+
+          <div style="display:flex; gap:8px; margin-top:8px;">
+            <button class="btn success" id="btn-finish">Selesai / Cetak Invoice</button>
+            <button class="btn" id="btn-continue">Lanjut Tambah Barang</button>
+            <button class="btn danger" id="btn-cancel-trans">Batal</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- MODAL: Transaction -->
-<div class="modal-backdrop" id="modal-transaction-backdrop">
-  <div class="modal card" role="dialog" aria-modal="true" style="max-height:92vh;overflow:auto;">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div><div class="title">Transaksi Kasir</div><div class="small muted">Search produk di atas untuk akses cepat</div></div>
-      <div><button class="ghost" id="close-transaction-modal">Tutup</button></div>
-    </div>
+<!-- INVOICE MODAL -->
+<div id="modal-invoice" style="display:none;">
+  <div class="modal-backdrop" id="invoice-backdrop">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 style="margin:0">Invoice</h2>
+        <div><button class="btn" id="close-invoice">Tutup</button></div>
+      </div>
+      <div style="margin-top:12px;">
+        <div id="print-area" class="invoice">
+          <div class="center">
+            <h3>Kasir Que</h3>
+            <div class="muted-2">Nota Pembelian</div>
+            <div class="muted-2" id="inv-date">—</div>
+            <hr>
+          </div>
+          <div id="inv-items"></div>
+          <hr>
+          <div class="line"><div>Subtotal</div><div id="inv-sub">Rp 0</div></div>
+          <div class="line"><div>Bayar</div><div id="inv-pay">Rp 0</div></div>
+          <div class="line"><div>Kembali</div><div id="inv-change">Rp 0</div></div>
+          <div class="center" style="margin-top:10px; font-size:11px;">Terima kasih. Selamat berbelanja!</div>
+        </div>
 
-    <!-- search -->
-    <div style="margin-top:8px">
-      <input id="search-product" class="input" placeholder="Cari produk (ketik nama) atau input manual nama & tekan Enter" />
-    </div>
-
-    <!-- add manual fallback -->
-    <div style="display:flex;gap:8px;margin-top:8px">
-      <input id="manual-qty" type="number" class="input" placeholder="Jumlah (pcs)" style="max-width:110px"/>
-      <input id="manual-price" type="number" class="input" placeholder="Harga (opsional override)"/>
-      <button class="btn" id="btn-add-manual">Tambah Manual</button>
-    </div>
-
-    <div class="cart-list" id="cart-list" style="margin-top:10px">
-      <!-- items appended here -->
-    </div>
-
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
-      <div class="small muted">Subtotal:<div id="txn-subtotal" style="font-weight:700;margin-top:6px">Rp 0</div></div>
-      <div style="display:flex;gap:8px">
-        <button class="ghost" id="btn-continue-add">Lanjut Tambah</button>
-        <button class="btn" id="btn-finish-txn">Selesai Transaksi</button>
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <button class="btn primary" id="btn-print">Cetak / Print</button>
+          <button class="btn" id="btn-save-inv">Simpan & Tutup</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
-<!-- MODAL: Invoice -->
-<div class="modal-backdrop" id="modal-invoice-backdrop">
-  <div class="modal card printable" role="dialog" aria-modal="true" style="max-width:360px;">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <div><div class="title">Invoice</div><div class="small muted" id="invoice-date"></div></div>
-      <div><button class="ghost" id="close-invoice-modal">Tutup</button></div>
-    </div>
-
-    <div id="invoice-content" style="margin-top:8px">
-      <!-- invoice HTML inserted here -->
-    </div>
-
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
-      <div class="small muted">Cetak:</div>
-      <div style="display:flex;gap:8px">
-        <button class="ghost" id="btn-print-invoice">Print</button>
-        <button class="btn" id="btn-save-invoice">Simpan & Tutup</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- hidden export import file input -->
-<input type="file" id="import-file" accept="application/json" style="display:none"/>
 
 <script>
 /*
-  Kasir Que
-  - Produk disimpan di localStorage key 'kq_products' (array)
-  - Transaksi disimpan di localStorage key 'kq_txns' (array)
-  - Laporan dihasilkan dari transaksi
+  Kasir Que - single-file POS
+  - Data saved in localStorage:
+     kasirque_products : array of products
+     kasirque_transactions : array of transactions
+  - Product: {id, name, unit, cost, retail, wholesale}
+  - Transaction: {id, datetime, items: [{productId, name, qty, price, cost}], total}
 */
 
-// util
-const rupiah = (n) => {
-  if (n==null) return 'Rp 0';
-  return 'Rp ' + Number(n).toLocaleString('id-ID');
-};
-const uid = ()=> 'id'+Date.now() + Math.floor(Math.random()*999);
+const LS_PRODUCTS = 'kasirque_products';
+const LS_TRANS = 'kasirque_transactions';
+const QTY_WHOLESALE_THRESHOLD = 5;
 
-// storage helpers
-const storage = {
-  getProducts(){ return JSON.parse(localStorage.getItem('kq_products')||'[]'); },
-  saveProducts(arr){ localStorage.setItem('kq_products', JSON.stringify(arr)); },
-  getTxns(){ return JSON.parse(localStorage.getItem('kq_txns')||'[]'); },
-  saveTxns(arr){ localStorage.setItem('kq_txns', JSON.stringify(arr)); },
-  clearAll(){ localStorage.removeItem('kq_products'); localStorage.removeItem('kq_txns'); }
+// UTIL
+const fmt = (n)=> {
+  n = Number(n)||0;
+  return 'Rp ' + n.toLocaleString('id-ID');
 };
+const uid = ()=> 'id'+Date.now()+Math.floor(Math.random()*9999);
 
-// UI references
-const productTableBody = document.querySelector('#product-table tbody');
-const prodCount = document.getElementById('prod-count');
-const btnAddProduct = document.getElementById('btn-add-product');
-const modalProduct = document.getElementById('modal-product-backdrop');
-const closeProduct = document.getElementById('close-product-modal');
-const btnCancelProduct = document.getElementById('btn-cancel-product');
-const btnSaveProduct = document.getElementById('btn-save-product');
-const inputs = {
-  name: document.getElementById('p-name'),
-  unit: document.getElementById('p-unit'),
-  cost: document.getElementById('p-cost'),
-  retail: document.getElementById('p-retail'),
-  wholesale: document.getElementById('p-wholesale'),
+// initial load
+let PRODUCTS = JSON.parse(localStorage.getItem(LS_PRODUCTS) || '[]');
+let TRANSACTIONS = JSON.parse(localStorage.getItem(LS_TRANS) || '[]');
+let CURRENT_CART = [];
+
+// DOM refs
+const cntProducts = document.getElementById('cnt-products');
+const cntTrans = document.getElementById('cnt-trans');
+const productsTbody = document.getElementById('products-tbody');
+const cartItems = document.getElementById('cart-items');
+const cartCount = document.getElementById('cart-count');
+const cartTotal = document.getElementById('cart-total');
+
+function saveProducts(){ localStorage.setItem(LS_PRODUCTS, JSON.stringify(PRODUCTS)); renderProducts(); updateSummary(); }
+function saveTrans(){ localStorage.setItem(LS_TRANS, JSON.stringify(TRANSACTIONS)); updateSummary(); }
+
+// render functions
+function updateSummary(){
+  cntProducts.textContent = PRODUCTS.length;
+  cntTrans.textContent = TRANSACTIONS.length;
 }
-let editingProductId = null;
 
-const btnOpenTxn = document.getElementById('btn-open-transaction');
-const modalTxn = document.getElementById('modal-transaction-backdrop');
-const closeTxn = document.getElementById('close-transaction-modal');
-const searchProduct = document.getElementById('search-product');
-const manualQty = document.getElementById('manual-qty');
-const manualPrice = document.getElementById('manual-price');
-const btnAddManual = document.getElementById('btn-add-manual');
-const cartList = document.getElementById('cart-list');
-const txnSubtotal = document.getElementById('txn-subtotal');
-const btnFinishTxn = document.getElementById('btn-finish-txn');
-const btnContinueAdd = document.getElementById('btn-continue-add');
-
-const modalInvoice = document.getElementById('modal-invoice-backdrop');
-const invoiceContent = document.getElementById('invoice-content');
-const invoiceDate = document.getElementById('invoice-date');
-const btnPrintInvoice = document.getElementById('btn-print-invoice');
-const btnSaveInvoice = document.getElementById('btn-save-invoice');
-const closeInvoice = document.getElementById('close-invoice-modal');
-
-const reportRange = document.getElementById('report-range');
-const reportFrom = document.getElementById('report-from');
-const reportTo = document.getElementById('report-to');
-const btnRefreshReport = document.getElementById('btn-refresh-report');
-const reportTableBody = document.querySelector('#report-table tbody');
-
-const summaryTransactions = document.getElementById('summary-transactions');
-const summaryRevenue = document.getElementById('summary-revenue');
-const summaryProfit = document.getElementById('summary-profit');
-
-const btnSeed = document.getElementById('btn-seed');
-const btnClear = document.getElementById('btn-clear');
-
-const btnExport = document.getElementById('btn-export');
-const btnImport = document.getElementById('btn-import');
-const importFile = document.getElementById('import-file');
-
-// in-memory current transaction (cart)
-let cart = [];
-
-// ---------- Product management ----------
-function renderProducts(){
-  const products = storage.getProducts();
-  productTableBody.innerHTML = '';
-  products.forEach(p=>{
+function renderProducts(filter=''){
+  productsTbody.innerHTML = '';
+  const list = PRODUCTS.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
+  list.forEach(p=>{
     const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${escapeHtml(p.name)}</td>
-      <td class="small">${escapeHtml(p.unit||'pcs')}</td>
-      <td>${rupiah(p.cost)}</td>
-      <td>${rupiah(p.retail)}</td>
-      <td>${rupiah(p.wholesale)}</td>
-      <td class="right nowrap">
-        <button class="ghost" data-action="edit" data-id="${p.id}">Edit</button>
-        <button class="ghost" data-action="del" data-id="${p.id}">Hapus</button>
-      </td>
-    `;
-    productTableBody.appendChild(tr);
+    tr.innerHTML = `<td>${p.name}</td><td>${p.unit||'-'}</td><td>${fmt(p.cost)}</td><td>${fmt(p.retail)}</td><td>${fmt(p.wholesale)}</td>
+      <td style="text-align:right">
+        <button class="small-btn btn" data-id="${p.id}" onclick="editProduct('${p.id}')">Edit</button>
+        <button class="small-btn btn danger" onclick="deleteProduct('${p.id}')">Hapus</button>
+      </td>`;
+    productsTbody.appendChild(tr);
   });
-  prodCount.textContent = `${products.length} produk`;
-}
-function openAddProduct(product=null){
-  modalProduct.style.display = 'flex';
-  if(product){
-    editingProductId = product.id;
-    inputs.name.value = product.name;
-    inputs.unit.value = product.unit || 'pcs';
-    inputs.cost.value = product.cost || 0;
-    inputs.retail.value = product.retail || 0;
-    inputs.wholesale.value = product.wholesale || 0;
-  } else {
-    editingProductId = null;
-    inputs.name.value=''; inputs.unit.value='pcs'; inputs.cost.value=''; inputs.retail.value=''; inputs.wholesale.value='';
-  }
-  inputs.name.focus();
-}
-function closeProductModal(){
-  modalProduct.style.display = 'none';
-  editingProductId = null;
-}
-function saveProductFromModal(){
-  const name = inputs.name.value.trim();
-  const unit = inputs.unit.value.trim() || 'pcs';
-  const cost = Number(inputs.cost.value) || 0;
-  const retail = Number(inputs.retail.value) || 0;
-  const wholesale = Number(inputs.wholesale.value) || 0;
-  if(!name){ alert('Nama produk dibutuhkan'); inputs.name.focus(); return; }
-  const prods = storage.getProducts();
-  if(editingProductId){
-    const idx = prods.findIndex(x=>x.id===editingProductId);
-    if(idx>=0){
-      prods[idx] = {...prods[idx], name, unit, cost, retail, wholesale};
-    }
-  } else {
-    prods.push({id:uid(), name, unit, cost, retail, wholesale});
-  }
-  storage.saveProducts(prods);
-  renderProducts();
-  closeProductModal();
-}
-
-// product table actions
-productTableBody.addEventListener('click', (e)=>{
-  const btn = e.target.closest('button');
-  if(!btn) return;
-  const action = btn.dataset.action;
-  const id = btn.dataset.id;
-  if(action==='edit'){
-    const p = storage.getProducts().find(x=>x.id===id);
-    if(p) openAddProduct(p);
-  } else if(action==='del'){
-    if(confirm('Hapus produk ini?')) {
-      const prods = storage.getProducts().filter(x=>x.id!==id);
-      storage.saveProducts(prods);
-      renderProducts();
-    }
-  }
-});
-
-// ---------- Transaction handling ----------
-function openTransactionModal(){
-  cart = [];
-  renderCart();
-  modalTxn.style.display = 'flex';
-  setTimeout(()=>searchProduct.focus(),50);
-}
-function closeTransactionModal(){ modalTxn.style.display = 'none'; }
-
-// search product & suggestion add
-searchProduct.addEventListener('input', ()=>{
-  const q = searchProduct.value.trim().toLowerCase();
-  if(q.length===0) return;
-  // if user types and presses Enter we'll try to auto-add if exact match
-});
-searchProduct.addEventListener('keydown', (e)=>{
-  if(e.key==='Enter'){
-    e.preventDefault();
-    const q = searchProduct.value.trim();
-    if(!q) return;
-    // try find product by name (case-insensitive)
-    const found = storage.getProducts().find(p=>p.name.toLowerCase() === q.toLowerCase());
-    if(found){
-      // open a quick small prompt to enter qty
-      const qtyStr = prompt(`Tambah "${found.name}" - masukkan jumlah (pcs)`, '1');
-      const qty = Number(qtyStr) || 0;
-      if(qty>0){
-        addToCart({ productId: found.id, name: found.name, qty, unit: found.unit, priceAuto:true });
-        searchProduct.value='';
-      }
-    } else {
-      // add as manual product entry without stored product
-      const add = confirm('Produk tidak ditemukan. Tambah sebagai item manual?');
-      if(add){
-        const qtyStr = prompt(`Tambah "${q}" - masukkan jumlah (pcs)`, '1');
-        const priceStr = prompt(`Masukkan harga jual per item (optional). kosong = 0`, '0');
-        const qty = Number(qtyStr) || 0;
-        const price = Number(priceStr) || 0;
-        if(qty>0){
-          addToCart({ productId:null, name:q, qty, unit:'pcs', priceCustom:price });
-          searchProduct.value='';
-        }
-      }
-    }
-  }
-});
-
-// manual add button
-btnAddManual.addEventListener('click', ()=>{
-  const qty = Number(manualQty.value) || 0;
-  const price = Number(manualPrice.value) || 0;
-  const q = searchProduct.value.trim();
-  if(!q && price<=0){ alert('Masukkan nama produk di kolom search atau masukkan harga manual.'); return; }
-  const itemName = q || 'Manual Item';
-  addToCart({ productId: null, name: itemName, qty, unit: 'pcs', priceCustom: price });
-  // clear
-  manualQty.value=''; manualPrice.value=''; searchProduct.value='';
-});
-
-// add to cart logic
-function addToCart({productId=null, name, qty=1, unit='pcs', priceCustom=null, priceAuto=false}){
-  if(qty<=0){ alert('Jumlah harus lebih dari 0'); return; }
-  let price = 0;
-  let prod = null;
-  if(productId){
-    prod = storage.getProducts().find(p=>p.id===productId);
-    if(prod){
-      // choose price based on qty
-      price = (qty < 5) ? Number(prod.retail) : Number(prod.wholesale);
-    }
-  }
-  if(priceCustom!=null && priceCustom>0) price = Number(priceCustom);
-  // if neither prod nor price, price stays 0
-  const item = {
-    id: uid(),
-    productId: productId,
-    name: name,
-    qty: qty,
-    unit: unit,
-    price: Number(price),
-    cost: prod ? Number(prod.cost) : 0
-  };
-  cart.push(item);
-  renderCart();
 }
 
 function renderCart(){
-  cartList.innerHTML = '';
-  let subtotal = 0;
-  cart.forEach((it, idx)=>{
-    subtotal += it.qty * it.price;
-    const div = document.createElement('div');
-    div.className = 'cart-item';
-    div.innerHTML = `
-      <div style="flex:1">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="font-weight:700">${escapeHtml(it.name)}</div>
-          <div class="small muted">x${it.qty} ${it.unit}</div>
-        </div>
-        <div class="small muted">${rupiah(it.price)} / pcs</div>
-      </div>
-      <div style="text-align:right">
-        <div class="price">${rupiah(it.price * it.qty)}</div>
-        <div style="margin-top:6px"><button class="ghost" data-act="edit" data-idx="${idx}">Ubah</button> <button class="ghost" data-act="del" data-idx="${idx}">Hapus</button></div>
-      </div>
-    `;
-    cartList.appendChild(div);
+  cartItems.innerHTML = '';
+  let total=0; let count=0;
+  CURRENT_CART.forEach((it, idx)=>{
+    const el = document.createElement('div');
+    el.className='cart-row';
+    el.innerHTML = `<div class="meta"><div style="font-weight:700">${it.name}</div><div class="muted">${it.qty} x ${fmt(it.price)}</div></div>
+      <div style="text-align:right"><div class="price">${fmt(it.qty * it.price)}</div><div class="small muted">${fmt((it.price - it.cost)*it.qty)} laba</div>
+      <div style="margin-top:6px"><button class="btn" onclick="removeCart(${idx})">Hapus</button></div></div>`;
+    cartItems.appendChild(el);
+    total += it.qty * it.price;
+    count += it.qty;
   });
-  txnSubtotal.innerText = rupiah(subtotal);
+  cartCount.textContent = CURRENT_CART.length;
+  cartTotal.textContent = fmt(total);
 }
 
-// cart actions (edit/hapus)
-cartList.addEventListener('click', (e)=>{
-  const btn = e.target.closest('button');
-  if(!btn) return;
-  const act = btn.dataset.act;
-  const idx = Number(btn.dataset.idx);
-  if(act==='del'){ cart.splice(idx,1); renderCart(); }
-  if(act==='edit'){
-    const it = cart[idx];
-    const newQty = Number(prompt('Jumlah baru (pcs)', it.qty)) || it.qty;
-    const newPrice = Number(prompt('Harga per item (RP)', it.price)) || it.price;
-    if(newQty>0) it.qty = newQty;
-    it.price = newPrice;
-    renderCart();
-  }
-});
-
-// finish transaction
-btnFinishTxn.addEventListener('click', ()=>{
-  if(cart.length===0){ alert('Keranjang kosong'); return; }
-  const paid = prompt('Nominal tunai yang dibayar (kosong = hitung exact)', '');
-  let total = cart.reduce((s,it)=>s + (it.qty*it.price), 0);
-  let paidVal = Number(paid) || total;
-  const change = paidVal - total;
-  // prepare txn object
-  const tx = {
-    id: uid(),
-    date: new Date().toISOString(),
-    items: cart.map(it=>({...it})),
-    total,
-    paid: paidVal,
-    change
-  };
-  // save transaction
-  const txns = storage.getTxns();
-  txns.push(tx);
-  storage.saveTxns(txns);
-  // open invoice modal
-  openInvoice(tx);
-  // clear cart & close txn modal
-  cart = [];
+function removeCart(i){
+  CURRENT_CART.splice(i,1);
   renderCart();
-  closeTransactionModal();
-  refreshSummary();
+}
+
+// PRODUCT CRUD bound to UI
+document.getElementById('save-product').addEventListener('click', ()=>{
+  const id = document.getElementById('p-id') ? document.getElementById('p-id').value : null;
+  const name = document.getElementById('p-name').value.trim();
+  const unit = document.getElementById('p-unit').value.trim();
+  const cost = Number(document.getElementById('p-cost').value)||0;
+  const retail = Number(document.getElementById('p-retail').value)||0;
+  const wholesale = Number(document.getElementById('p-wholesale').value)||0;
+  if(!name){ alert('Nama produk wajib diisi'); return; }
+  if(id){
+    const idx = PRODUCTS.findIndex(x=>x.id===id);
+    if(idx>=0){ PRODUCTS[idx] = {id,name,unit,cost,retail,wholesale}; saveProducts(); resetProductForm(); return; }
+  }
+  PRODUCTS.push({id:uid(),name,unit,cost,retail,wholesale});
+  saveProducts(); resetProductForm();
 });
 
-// invoice UI
-function openInvoice(tx){
-  invoiceDate.innerText = (new Date(tx.date)).toLocaleString();
-  invoiceContent.innerHTML = generateInvoiceHTML(tx);
-  modalInvoice.style.display = 'flex';
+function resetProductForm(){
+  document.getElementById('p-name').value=''; document.getElementById('p-unit').value=''; document.getElementById('p-cost').value=''; document.getElementById('p-retail').value=''; document.getElementById('p-wholesale').value='';
 }
-function closeInvoiceModal(){ modalInvoice.style.display = 'none'; }
-btnPrintInvoice.addEventListener('click', ()=>{
-  // print invoice content — only printable area visible
+
+function editProduct(id){
+  const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+  document.getElementById('p-name').value = p.name;
+  document.getElementById('p-unit').value = p.unit;
+  document.getElementById('p-cost').value = p.cost;
+  document.getElementById('p-retail').value = p.retail;
+  document.getElementById('p-wholesale').value = p.wholesale;
+  // Save by overriding existing if saved again
+  // set hidden id? not necessary given code checks id presence.
+  // We'll add hidden field:
+  if(!document.getElementById('p-id')){
+    const h = document.createElement('input'); h.type='hidden'; h.id='p-id';
+    document.getElementById('p-name').parentElement.parentElement.appendChild(h);
+  }
+  document.getElementById('p-id').value = id;
+}
+
+function deleteProduct(id){
+  if(!confirm('Hapus produk?')) return;
+  PRODUCTS = PRODUCTS.filter(x=>x.id!==id);
+  saveProducts();
+}
+
+/* UI navigation */
+document.getElementById('btn-open-stock').addEventListener('click', ()=>{ showPanel('stock'); });
+document.getElementById('btn-reports').addEventListener('click', ()=>{ showPanel('reports'); });
+document.getElementById('btn-add-product').addEventListener('click', ()=>{ showPanel('stock'); window.scrollTo({top:0,behavior:'smooth'}); });
+document.getElementById('btn-sample').addEventListener('click', ()=>{ fillSample(); });
+document.getElementById('btn-clear-data').addEventListener('click', ()=>{ if(confirm('Hapus semua data produk dan transaksi?')){ PRODUCTS=[]; TRANSACTIONS=[]; CURRENT_CART=[]; saveProducts(); saveTrans(); renderCart(); } });
+
+function showPanel(name){
+  document.getElementById('panel-stock').style.display = (name==='stock'? 'block' : 'none');
+  document.getElementById('panel-reports').style.display = (name==='reports'? 'block' : 'none');
+  document.getElementById('panel-home').style.display = (name==='home'? 'block' : 'none');
+}
+
+/* suggestions & transaction modal logic */
+const modalTrans = document.getElementById('modal-transaction');
+const btnOpenTrans = document.getElementById('btn-open-transaction');
+document.getElementById('btn-open-trans').addEventListener('click', openTransModal);
+document.getElementById('open-trans-quick').addEventListener('click', openTransModal);
+
+btnOpenTrans.addEventListener('click', openTransModal);
+
+function openTransModal(){
+  modalTrans.style.display='block';
+  document.getElementById('trans-backdrop').style.display='flex';
+  document.getElementById('trans-search').focus();
+  // show existing cart items inside modal
+  renderTransCart();
+}
+document.getElementById('close-trans').addEventListener('click', closeTransModal);
+document.getElementById('trans-backdrop').addEventListener('click', (e)=>{
+  if(e.target === document.getElementById('trans-backdrop')) closeTransModal();
+});
+function closeTransModal(){ modalTrans.style.display='none'; document.getElementById('trans-backdrop').style.display='none'; }
+
+// suggestion dropdown
+const transSearch = document.getElementById('trans-search');
+const suggestBox = document.getElementById('suggest-box');
+let SUGGESTIONS_VISIBLE = false;
+transSearch.addEventListener('input', ()=> {
+  const q = transSearch.value.trim().toLowerCase();
+  if(!q){ suggestBox.style.display='none'; SUGGESTIONS_VISIBLE=false; return; }
+  const matches = PRODUCTS.filter(p => p.name.toLowerCase().includes(q)).slice(0,8);
+  if(matches.length===0){ suggestBox.style.display='none'; SUGGESTIONS_VISIBLE=false; return; }
+  suggestBox.innerHTML = '';
+  matches.forEach(m=>{
+    const div = document.createElement('div');
+    div.className='suggest-item';
+    div.textContent = `${m.name} — ${m.unit || ''} — ${fmt(m.retail)}`;
+    div.onclick = ()=> selectProductForTrans(m);
+    suggestBox.appendChild(div);
+  });
+  suggestBox.style.display='block'; SUGGESTIONS_VISIBLE=true;
+});
+document.addEventListener('click', (e)=> {
+  if(!e.target.closest('.suggestions')){ suggestBox.style.display='none'; SUGGESTIONS_VISIBLE=false; }
+});
+
+// select product for transaction
+function selectProductForTrans(p){
+  document.getElementById('trans-name').value = p.name;
+  document.getElementById('trans-name').dataset.id = p.id;
+  document.getElementById('trans-qty').value = 1;
+  document.getElementById('trans-price').value = fmt(p.retail);
+  document.getElementById('trans-price').dataset.val = p.retail;
+  suggestBox.style.display='none';
+  transSearch.value = '';
+  document.getElementById('trans-qty').focus();
+}
+
+// auto update price when qty changes
+document.getElementById('trans-qty').addEventListener('input', ()=>{
+  const id = document.getElementById('trans-name').dataset.id;
+  const qty = Number(document.getElementById('trans-qty').value)||1;
+  if(!id) return;
+  const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+  const price = (qty >= QTY_WHOLESALE_THRESHOLD) ? p.wholesale : p.retail;
+  document.getElementById('trans-price').value = fmt(price);
+  document.getElementById('trans-price').dataset.val = price;
+});
+
+// add to cart inside modal
+document.getElementById('btn-add-to-cart').addEventListener('click', ()=>{
+  const id = document.getElementById('trans-name').dataset.id;
+  const name = document.getElementById('trans-name').value;
+  if(!id || !name){ alert('Pilih produk dulu dari hasil pencarian.'); return; }
+  const qty = Number(document.getElementById('trans-qty').value) || 1;
+  const price = Number(document.getElementById('trans-price').dataset.val) || 0;
+  const p = PRODUCTS.find(x=>x.id===id);
+  const item = {productId:id, name: p.name, qty, price, cost: p.cost};
+  CURRENT_CART.push(item);
+  renderTransCart();
+  // reset fields for convenience
+  document.getElementById('trans-name').value=''; delete document.getElementById('trans-name').dataset.id;
+  document.getElementById('trans-price').value=''; document.getElementById('trans-price').dataset.val='';
+  document.getElementById('trans-qty').value=1;
+});
+
+// trans cart rendering inside modal
+function renderTransCart(){
+  const list = document.getElementById('trans-cart-list');
+  list.innerHTML = '';
+  let total=0;
+  CURRENT_CART.forEach((it,idx)=>{
+    const div = document.createElement('div');
+    div.className='cart-row';
+    div.innerHTML = `<div class="meta"><div style="font-weight:700">${it.name}</div><div class="muted">${it.qty} x ${fmt(it.price)}</div></div>
+      <div style="text-align:right">
+        <div class="price">${fmt(it.price * it.qty)}</div>
+        <div style="margin-top:6px"><button class="btn" onclick="removeFromTrans(${idx})">Hapus</button></div>
+      </div>`;
+    list.appendChild(div);
+    total += it.qty * it.price;
+  });
+  document.getElementById('trans-count').textContent = CURRENT_CART.length;
+  document.getElementById('trans-total').textContent = fmt(total);
+}
+
+function removeFromTrans(i){ CURRENT_CART.splice(i,1); renderTransCart(); }
+
+// finish, print invoice
+document.getElementById('btn-finish').addEventListener('click', finishTransaction);
+document.getElementById('btn-save-inv').addEventListener('click', ()=>{ closeInvoiceModal(); });
+document.getElementById('btn-print').addEventListener('click', ()=> {
+  // open print dialog for print-area
   window.print();
 });
-btnSaveInvoice.addEventListener('click', ()=>{
-  alert('Transaksi disimpan.'); closeInvoiceModal();
+document.getElementById('btn-cancel-trans').addEventListener('click', ()=>{
+  if(confirm('Batal transaksi?')){ CURRENT_CART = []; renderTransCart(); }
 });
 
-// generate invoice HTML (simple thermal style)
-function generateInvoiceHTML(tx){
-  let html = `<div class="invoice" style="font-family:monospace">`;
-  html += `<div style="text-align:center;font-weight:700">KASIR QUE</div>`;
-  html += `<div style="text-align:center;font-size:12px;margin-bottom:8px">Nota Penjualan - ${new Date(tx.date).toLocaleString()}</div>`;
-  html += `<table style="width:100%"><tbody>`;
-  tx.items.forEach(it=>{
-    const name = escapeHtml(it.name);
-    const lineTotal = it.qty * it.price;
-    html += `<tr><td style="width:70%">${name} <div style="font-size:11px;color:#666">(${it.qty} x ${rupiah(it.price)})</div></td><td style="text-align:right">${rupiah(lineTotal)}</td></tr>`;
-  });
-  html += `</tbody></table>`;
-  html += `<hr/>`;
-  html += `<table style="width:100%"><tbody>`;
-  html += `<tr><td>Subtotal</td><td style="text-align:right">${rupiah(tx.total)}</td></tr>`;
-  html += `<tr><td>Bayar</td><td style="text-align:right">${rupiah(tx.paid)}</td></tr>`;
-  html += `<tr><td>Kembali</td><td style="text-align:right">${rupiah(tx.change)}</td></tr>`;
-  html += `</tbody></table>`;
-  html += `<div style="text-align:center;font-size:11px;margin-top:10px">Terima kasih atas kunjungan Anda</div>`;
-  html += `</div>`;
-  return html;
+function finishTransaction(){
+  if(CURRENT_CART.length===0){ alert('Keranjang kosong'); return; }
+  // create transaction object
+  const total = CURRENT_CART.reduce((s,i)=> s + i.qty * i.price, 0);
+  const trans = { id: uid(), datetime: new Date().toISOString(), items: CURRENT_CART.map(i=>({...i})), total };
+  TRANSACTIONS.push(trans);
+  saveTrans();
+  // open invoice modal populated
+  openInvoiceModal(trans);
+  // clear cart afterwards
+  CURRENT_CART = [];
+  renderTransCart();
+  renderCart();
+  closeTransModal();
 }
-
-// ---------- Reports ----------
-function refreshReport(){
-  const range = reportRange.value;
-  let fromDate=null, toDate=null;
-  const now = new Date();
-  if(range==='today'){
-    fromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0,0,0);
-    toDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23,59,59);
-  } else if(range==='week'){
-    const day = now.getDay(); // 0-6 sun-sat
-    const diff = now.getDate() - day + (day===0 ? -6:1); // monday start
-    fromDate = new Date(now.getFullYear(), now.getMonth(), diff,0,0,0);
-    toDate = new Date(now.getFullYear(), now.getMonth(), fromDate.getDate()+6,23,59,59);
-  } else if(range==='month'){
-    fromDate = new Date(now.getFullYear(), now.getMonth(), 1,0,0,0);
-    toDate = new Date(now.getFullYear(), now.getMonth()+1, 0,23,59,59);
-  } else if(range==='custom'){
-    if(reportFrom.value && reportTo.value){
-      fromDate = new Date(reportFrom.value + 'T00:00:00');
-      toDate = new Date(reportTo.value + 'T23:59:59');
-    } else {
-      alert('Pilih tanggal from & to'); return;
-    }
-  }
-  // aggregate transactions
-  const txns = storage.getTxns();
-  const filtered = txns.filter(tx=>{
-    const d = new Date(tx.date);
-    if(!fromDate || !toDate) return true;
-    return d >= fromDate && d <= toDate;
-  });
-  // map productName -> {qty, cost, revenue, profit}
-  const map = {};
-  filtered.forEach(tx=>{
-    tx.items.forEach(it=>{
-      const key = it.name;
-      if(!map[key]) map[key] = {name: it.name, qty:0, cost:0, revenue:0};
-      map[key].qty += Number(it.qty);
-      map[key].cost += Number(it.cost) * Number(it.qty || 0);
-      map[key].revenue += Number(it.price) * Number(it.qty || 0);
-    });
-  });
-  // render
-  reportTableBody.innerHTML = '';
-  Object.values(map).forEach(row=>{
-    const profit = row.revenue - row.cost;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${escapeHtml(row.name)}</td><td>${row.qty}</td><td>${rupiah(row.cost)}</td><td>${rupiah(row.revenue)}</td><td>${rupiah(profit)}</td>`;
-    reportTableBody.appendChild(tr);
-  });
-  if(Object.values(map).length===0){
-    reportTableBody.innerHTML = '<tr><td colspan="5" class="small muted">Tidak ada data</td></tr>';
-  }
-}
-
-// ---------- Summary ----------
-function refreshSummary(){
-  const txns = storage.getTxns();
-  summaryTransactions.innerText = `${txns.length} transaksi`;
-  // compute month revenue & profit (month this)
-  const now = new Date();
-  const startMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  let revenue = 0, cost = 0;
-  txns.forEach(tx=>{
-    const d = new Date(tx.date);
-    if(d >= startMonth){
-      revenue += Number(tx.total || 0);
-      tx.items.forEach(it=>{
-        cost += Number(it.cost || 0) * Number(it.qty || 0);
-      });
-    }
-  });
-  const profit = revenue - cost;
-  summaryRevenue.innerText = rupiah(revenue);
-  summaryProfit.innerText = rupiah(profit);
-}
-
-// ---------- Helpers & events ----------
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); }); }
-
-// modal toggles
-btnAddProduct.addEventListener('click', ()=>openAddProduct());
-closeProduct.addEventListener('click', closeProductModal);
-btnCancelProduct.addEventListener('click', closeProductModal);
-btnSaveProduct.addEventListener('click', saveProductFromModal);
-
-// transaction modal
-btnOpenTxn.addEventListener('click', openTransactionModal);
-closeTxn.addEventListener('click', closeTransactionModal);
 
 // invoice modal
-closeInvoice.addEventListener('click', closeInvoiceModal);
+const modalInvoice = document.getElementById('modal-invoice');
+function openInvoiceModal(tx){
+  modalInvoice.style.display='block';
+  document.getElementById('invoice-backdrop').style.display='flex';
+  // populate invoice content
+  document.getElementById('inv-date').textContent = (new Date(tx.datetime)).toLocaleString();
+  const invItems = document.getElementById('inv-items'); invItems.innerHTML='';
+  tx.items.forEach(it=>{
+    const div = document.createElement('div');
+    div.className='line';
+    div.innerHTML = `<div>${it.name} x${it.qty}</div><div>${fmt(it.price * it.qty)}</div>`;
+    invItems.appendChild(div);
+  });
+  document.getElementById('inv-sub').textContent = fmt(tx.total);
+  // for thermal simplicity, assume bayar = total
+  document.getElementById('inv-pay').textContent = fmt(tx.total);
+  document.getElementById('inv-change').textContent = fmt(0);
+}
+document.getElementById('close-invoice').addEventListener('click', closeInvoiceModal);
+document.getElementById('invoice-backdrop').addEventListener('click',(e)=>{ if(e.target === document.getElementById('invoice-backdrop')) closeInvoiceModal(); });
 
-// report controls
-reportRange.addEventListener('change', ()=>{
-  if(reportRange.value==='custom'){
-    reportFrom.style.display='inline-block';
-    reportTo.style.display='inline-block';
-  } else {
-    reportFrom.style.display='none';
-    reportTo.style.display='none';
+function closeInvoiceModal(){ modalInvoice.style.display='none'; document.getElementById('invoice-backdrop').style.display='none'; }
+
+// quick product search (top)
+document.getElementById('quick-search').addEventListener('keydown',(e)=>{
+  if(e.key==='Enter') {
+    const q = e.target.value.trim().toLowerCase();
+    const p = PRODUCTS.find(x=>x.name.toLowerCase().includes(q));
+    if(p) { selectProductForTrans(p); openTransModal(); } else alert('Produk tidak ditemukan');
   }
 });
-btnRefreshReport.addEventListener('click', refreshReport);
 
-// seed & clear
-btnSeed.addEventListener('click', ()=>{
-  if(!confirm('Isi data contoh?')) return;
-  const sample = [
-    {id:uid(), name:'Buku Tulis A5', unit:'pcs', cost:3000, retail:5000, wholesale:4500},
-    {id:uid(), name:'Pulpen Hitam', unit:'pcs', cost:1500, retail:3000, wholesale:2500},
-    {id:uid(), name:'Sampo 200ml', unit:'botol', cost:12000, retail:20000, wholesale:18000},
-    {id:uid(), name:'Masker Medis (10 pcs)', unit:'box', cost:20000, retail:35000, wholesale:30000}
-  ];
-  storage.saveProducts(sample);
-  // sample transactions
-  const sampleTxns = [
-    {id:uid(), date:new Date().toISOString(), items:[
-      {id:uid(), productId:sample[0].id, name:sample[0].name, qty:2, unit:'pcs', price:5000, cost:3000},
-      {id:uid(), productId:sample[1].id, name:sample[1].name, qty:6, unit:'pcs', price:2500, cost:1500}
-    ], total: 2*5000 + 6*2500, paid:30000, change:30000-(2*5000 + 6*2500)}
-  ];
-  storage.saveTxns(sampleTxns);
-  renderProducts();
-  refreshReport();
-  refreshSummary();
-  alert('Contoh data sudah ditambahkan.');
-});
-btnClear.addEventListener('click', ()=>{
-  if(confirm('Hapus semua data produk & transaksi?')){ storage.clearAll(); renderProducts(); refreshReport(); refreshSummary(); alert('Semua data dihapus'); }
+// cart in right panel open transaction
+document.getElementById('btn-open-transaction').addEventListener('click', openTransModal);
+document.getElementById('btn-clear-cart').addEventListener('click', ()=>{ if(confirm('Kosongkan keranjang?')){ CURRENT_CART=[]; renderCart(); } });
+
+// reports generation
+document.getElementById('btn-generate-report').addEventListener('click', ()=> {
+  const range = document.getElementById('report-range').value;
+  const rows = generateReport(range);
+  const tbody = document.getElementById('report-body'); tbody.innerHTML='';
+  rows.forEach(r=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${r.name}</td><td>${r.qty}</td><td>${fmt(r.cost)}</td><td>${fmt(r.avgPrice)}</td><td>${fmt(r.profit)}</td>`;
+    tbody.appendChild(tr);
+  });
 });
 
-// export & import
-btnExport.addEventListener('click', ()=>{
-  const payload = {
-    products: storage.getProducts(),
-    txns: storage.getTxns(),
-    exportedAt: new Date().toISOString()
-  };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+// report logic
+function generateReport(range){
+  // determine start date
+  const now = new Date();
+  let start;
+  if(range==='day'){ start = new Date(now.getFullYear(), now.getMonth(), now.getDate()); }
+  else if(range==='week'){ // week starts Monday
+    const day = now.getDay() || 7; // sunday=0 -> 7
+    start = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (day-1));
+  } else if(range==='month'){ start = new Date(now.getFullYear(), now.getMonth(), 1); }
+  else start = new Date(0);
+  const data = {};
+  TRANSACTIONS.forEach(t=>{
+    const d = new Date(t.datetime);
+    if(d < start) return;
+    t.items.forEach(it=>{
+      if(!data[it.productId]) data[it.productId] = {name:it.name, qty:0, revenue:0, cost:0};
+      data[it.productId].qty += it.qty;
+      data[it.productId].revenue += it.qty * it.price;
+      data[it.productId].cost += it.qty * it.cost;
+    });
+  });
+  return Object.values(data).map(x=>({
+    name: x.name,
+    qty: x.qty,
+    cost: Math.round(x.cost / (x.qty||1)),
+    avgPrice: Math.round(x.revenue / (x.qty||1)),
+    profit: Math.round(x.revenue - x.cost)
+  }));
+}
+
+/* import/export */
+document.getElementById('export-products').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(PRODUCTS, null, 2)], {type:'application/json'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'kasir-que-data.json';
-  a.click();
-  URL.revokeObjectURL(url);
+  const a = document.createElement('a'); a.href = url; a.download = 'kasirque_products.json'; document.body.appendChild(a); a.click(); a.remove();
 });
-btnImport.addEventListener('click', ()=>importFile.click());
-importFile.addEventListener('change', (e)=>{
-  const f = e.target.files[0];
-  if(!f) return;
+document.getElementById('import-products').addEventListener('click', ()=> document.getElementById('file-input').click());
+document.getElementById('file-input').addEventListener('change', (e)=>{
+  const f = e.target.files[0]; if(!f) return;
   const reader = new FileReader();
-  reader.onload = ()=> {
-    try {
-      const obj = JSON.parse(reader.result);
-      if(obj.products) storage.saveProducts(obj.products);
-      if(obj.txns) storage.saveTxns(obj.txns);
-      renderProducts(); refreshReport(); refreshSummary();
-      alert('Import selesai.');
-    } catch(err){ alert('Gagal import: ' + err.message); }
+  reader.onload = (ev)=> {
+    try{
+      const arr = JSON.parse(ev.target.result);
+      if(Array.isArray(arr)){ PRODUCTS = arr; saveProducts(); alert('Impor berhasil'); }
+      else alert('Format JSON tidak valid');
+    }catch(err){ alert('Gagal membaca file'); }
   };
   reader.readAsText(f);
 });
 
-// initialize
-(function init(){
-  renderProducts();
-  refreshReport();
-  refreshSummary();
-  // if no product, show hint
-  if(storage.getProducts().length===0){
-    // keep empty until user seeds
-  }
-})();
+/* helpers to render right-panel cart */
+function addToMainCartFromTrans(item){
+  CURRENT_CART.push(item);
+  renderCart();
+}
 
+/* Save & render initial */
+renderProducts();
+renderCart();
+updateSummary();
+
+/* helper: fill sample data */
+function fillSample(){
+  if(confirm('Isi data contoh? (akan menambah produk sample)')){
+    const samples = [
+      {id:uid(),name:'Sabun Mandi 100ml',unit:'pcs',cost:2500,retail:5000,wholesale:4500},
+      {id:uid(),name:'Shampoo Anti Ketombe 200ml',unit:'pcs',cost:15000,retail:30000,wholesale:27000},
+      {id:uid(),name:'Sikat Gigi',unit:'pcs',cost:2000,retail:7000,wholesale:6500},
+      {id:uid(),name:'Masker Kain',unit:'pcs',cost:5000,retail:15000,wholesale:13000},
+      {id:uid(),name:'Baterai AA',unit:'pcs',cost:3000,retail:8000,wholesale:7000}
+    ];
+    PRODUCTS = PRODUCTS.concat(samples);
+    saveProducts();
+    alert('Sample ditambahkan');
+  }
+}
+
+/* small binding to allow pressing Enter in trans-name to focus qty */
+document.getElementById('trans-name').addEventListener('keydown', (e)=> { if(e.key==='Enter') document.getElementById('trans-qty').focus(); });
+
+/* Expose some functions globally for inline onclicks */
+window.editProduct = editProduct;
+window.deleteProduct = deleteProduct;
+window.removeCart = removeCart;
+window.removeFromTrans = removeFromTrans;
+
+// initial panel
+showPanel('home');
 </script>
 </body>
-          </html>
+</html>
